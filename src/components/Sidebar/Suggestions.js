@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getSuggestedUsers } from "../../services/firebaseServices";
 import SuggestedProfile from "./SuggestedProfile";
 
-const Suggestions = ({ userId, following }) => {
+const Suggestions = ({ userId, following, loggedInUserDocId }) => {
   const [profiles, setProfiles] = useState(null);
 
   useEffect(() => {
@@ -28,10 +28,11 @@ const Suggestions = ({ userId, following }) => {
         {profiles.map((profile) => (
           <SuggestedProfile
             key={profile.docId}
-            userDocId={profile.docId}
+            suggestedProfileDocId={profile.docId}
             username={profile.username}
             profileId={profile.userId}
             userId={userId}
+            loggedInUserDocId={loggedInUserDocId}
           />
         ))}
       </div>
@@ -42,6 +43,7 @@ const Suggestions = ({ userId, following }) => {
 Suggestions.propTypes = {
   userId: PropTypes.string,
   following: PropTypes.array,
+  loggedInUserDocId: PropTypes.string,
 };
 
 export default Suggestions;

@@ -1,7 +1,11 @@
 import { firebase, FieldValue } from "../lib/firebaseLib";
 
 export async function doesUsernameExists(username) {
-  const result = await firebase.firestore().collection("users").where("username", "==", username).get();
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .where("username", "==", username)
+    .get();
   return result.docs.map((user) => user.data().length > 0);
 }
 
@@ -20,4 +24,32 @@ export async function getSuggestedUsers(userId, following) {
   return result.docs
     .map((user) => ({ ...user.data(), docId: user.id }))
     .filter((profile) => profile.userId !== userId && !following.includes(profile.userId));
+}
+
+export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, isProfileFollowed) {
+  return firebase
+    .firestore()
+    .collection("users")
+    .doc(loggedInUserDocId)
+    .update({
+      following: isProfileFollowed
+        ? FieldValue.arrayRemove(profileId)
+        : FieldValue.arrayUnion(profileId),
+    });
+}
+
+export function updateFollowedUserFollowers(
+  suggestedProfileDocId,
+  loggedInUserDocId,
+  isProfileFollowed
+) {
+  return firebase
+    .firestore()
+    .collection("users")
+    .doc(suggestedProfileDocId)
+    .update({
+      followers: isProfileFollowed
+        ? FieldValue.arrayRemove(loggedInUserDocId)
+        : FieldValue.arrayUnion(loggedInUserDocId),
+    });
 }
