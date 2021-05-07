@@ -1,52 +1,47 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getSuggestedUsers } from "../../services/firebaseServices";
+import SuggestedProfile from "./SuggestedProfile";
 
-const Suggestions = ({ userId }) => {
+const Suggestions = ({ userId, following }) => {
   const [profiles, setProfiles] = useState(null);
 
   useEffect(() => {
     async function getProfiles() {
-      const response = await getSuggestedUsers();
+      const response = await getSuggestedUsers(userId, following);
       setProfiles(response);
     }
-    getProfiles();
-  }, [userId]);
-
-  console.log("users", profiles);
-  console.log("sugest", getSuggestedUsers());
+    if (userId) {
+      getProfiles();
+    }
+  }, [userId, following]);
 
   return !profiles ? (
     <Skeleton count={1} height={61} />
-  ) : (
-    <div>
-      {" "}
-      <h1>Suggestions for you</h1>
-      {profiles.map((user) => {
-        return (
-          <Link to={`/p/${user.username}`} key={userId}>
-            <div className="flex items-center justify-between col-span-1">
-              <img
-                className="rounded-full w-16 h-16 mr-3"
-                src={`/images/avatars/${user.username}.jpg`}
-                alt={`${user.username}`}
-              />
-            </div>
-            <div className="col-span-2">
-              <p className="font-bold text-sm">{user.username}</p>
-              <p className="text-sm">{user.fullName}</p>
-            </div>
-          </Link>
-        );
-      })}
+  ) : profiles.length > 0 ? (
+    <div className="rounded flex flex-col">
+      <div className="text-sm flex items-center align-items justify-between mb-2">
+        <p className="font-bold text-gray-base"> Suggestions for you</p>
+      </div>
+      <div className="mt-4 grid gap-5">
+        {profiles.map((profile) => (
+          <SuggestedProfile
+            key={profile.docId}
+            userDocId={profile.docId}
+            username={profile.username}
+            profileId={profile.userId}
+            userId={userId}
+          />
+        ))}
+      </div>
     </div>
-  );
+  ) : null;
 };
 
 Suggestions.propTypes = {
   userId: PropTypes.string,
+  following: PropTypes.array,
 };
 
 export default Suggestions;

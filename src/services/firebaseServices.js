@@ -15,7 +15,9 @@ export async function getUserByUserId(userId) {
 }
 
 // get suggested profiles from firestore
-export async function getSuggestedUsers() {
-  const result = await firebase.firestore().collection("users").get();
-  return result.docs.map((user) => user.data());
+export async function getSuggestedUsers(userId, following) {
+  const result = await firebase.firestore().collection("users").limit(10).get();
+  return result.docs
+    .map((user) => ({ ...user.data(), docId: user.id }))
+    .filter((profile) => profile.userId !== userId && !following.includes(profile.userId));
 }
