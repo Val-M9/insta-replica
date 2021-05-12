@@ -11,7 +11,7 @@ const Footer = ({ caption, username }) => {
 
 Footer.propTypes = {
   caption: PropTypes.string.isRequired,
-  username: PropTypes.shape.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default Footer;

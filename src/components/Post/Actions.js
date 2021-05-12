@@ -30,11 +30,6 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
       <div className="flex">
         <svg
           onClick={handleToggleLiked}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleToggleLiked();
-            }
-          }}
           xmlns="http://www.w3.org/2000/svg"
           className={`mr-4 w-6 select-none cursor-pointer ${
             toggleLiked ? "fill-red text-red-primary" : "text-black-light"
@@ -51,6 +46,12 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
           />
         </svg>
         <svg
+          onClick={handleFocus}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleFocus();
+            }
+          }}
           xmlns="http://www.w3.org/2000/svg"
           className="w-6 text-black-light select-none cursor-pointer"
           fill="none"
