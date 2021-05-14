@@ -7,19 +7,19 @@ const Login = () => {
   const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
 
-  const [email, setEmail] = useState("");
+  const [emailaddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
-  const isInvalid = password === "" || email === "";
+  const isInvalid = password === "" || emailaddress === "";
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await firebase.auth().signInWithEmailAndPassword(emailaddress, password);
       history.push(ROUTES.DASHBOARD);
     } catch (error) {
-      setEmail("");
+      setEmailAddress("");
       setPassword("");
       setError(error.message);
     }
@@ -44,13 +44,13 @@ const Login = () => {
 
           <form onSubmit={handleLogin} method="POST">
             <input
-              aria-label="Enter your email address"
+              aria-label="Enter your emailaddress address"
               type="text"
               placeholder="Email address"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2
                        border border-gray-primary rounded mb-2"
-              onChange={({ target }) => setEmail(target.value)}
-              value={email}
+              onChange={({ target }) => setEmailAddress(target.value)}
+              value={emailaddress}
             />
             <input
               aria-label="Enter your password"
