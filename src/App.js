@@ -6,12 +6,13 @@ import UserContext from "./context/UserContext";
 import IsUserLoggedIn from "./helpers/is-user-logged-in";
 import ProtectedRoute from "./helpers/protected-route";
 import useAuthListener from "./hooks/use-auth-listener";
+import Preloader from "./preloader/Preloader";
 
 const Login = lazy(() => import("./pages/Login"));
 const SignUp = lazy(() => import("./pages/SignUp"));
-const NotFound = lazy(() => import("./pages/NotFound"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const { user } = useAuthListener();
@@ -19,7 +20,7 @@ function App() {
   return (
     <UserContext.Provider value={{ user }}>
       <Router>
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Preloader />}>
           <Switch>
             <IsUserLoggedIn user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.LOGIN}>
               <Login />
