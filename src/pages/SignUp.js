@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import FirebaseContext from "../context/FirebaseContext";
 import * as ROUTES from "../constants/routes";
 import { doesUsernameExists } from "../services/firebaseServices";
@@ -24,7 +23,9 @@ const SignUp = () => {
     console.log("username", usernameExists);
     if (!usernameExists.length) {
       try {
-        const createdUserResult = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
 
         // auth -> email & password & username (displayName)
         await createdUserResult.user.updateProfile({
@@ -110,7 +111,9 @@ const SignUp = () => {
             <button
               disabled={isInvalid}
               type="submit"
-              className={`bg-blue-medium text-white w-full rounded h-8 font-bold ${isInvalid && "opacity-50"}`}
+              className={`bg-blue-medium text-white w-full rounded h-8 font-bold ${
+                isInvalid && "opacity-50"
+              }`}
             >
               Sign Up
             </button>

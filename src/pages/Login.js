@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import FirebaseContext from "../context/FirebaseContext";
 import * as ROUTES from "../constants/routes";
 
@@ -65,7 +64,9 @@ const Login = () => {
             <button
               disabled={isInvalid}
               type="submit"
-              className={`bg-blue-medium text-white w-full rounded h-8 font-bold ${isInvalid && "opacity-50"}`}
+              className={`bg-blue-medium text-white w-full rounded h-8 font-bold ${
+                isInvalid && "opacity-50"
+              }`}
             >
               Log In
             </button>
