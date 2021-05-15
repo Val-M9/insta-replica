@@ -4,7 +4,6 @@ import Post from "./Post/Post";
 
 const Timeline = () => {
   const { photos } = usePhotos();
-  console.log("photos", photos);
   return (
     <div className="container col-span-2">
       {!photos ? (

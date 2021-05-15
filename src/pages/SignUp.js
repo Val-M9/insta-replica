@@ -20,7 +20,6 @@ const SignUp = () => {
     event.preventDefault();
 
     const usernameExists = await doesUsernameExists(username);
-    console.log("username", usernameExists);
     if (!usernameExists.length) {
       try {
         const createdUserResult = await firebase
