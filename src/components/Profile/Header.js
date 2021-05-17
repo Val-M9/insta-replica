@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 import useUser from "../../hooks/use-user";
-import { isUserFollowingProfile } from "../../services/firebaseServices";
+import { isUserFollowingProfile, toggleFollow } from "../../services/firebaseServices";
 
 const Header = ({
   photosCount,
@@ -21,11 +21,14 @@ const Header = ({
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const followBtnActive = user.username && user.username !== profileUsername;
 
-  const handleToggleFollow = () => {
-    setIsFollowingProfile(!isFollowingProfile);
+  const handleToggleFollow = async () => {
+    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
+    console.log("isFollowing", isFollowingProfile);
+
     setFollowerCount({
-      followerCount: isFollowingProfile ? followers.length - 1 : followers.length + 1,
+      followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1,
     });
+    await toggleFollow(user.docId, profileUserId, user.userId, profileDocId, isFollowingProfile);
   };
   console.log("followerCount", followerCount);
 
@@ -64,11 +67,32 @@ const Header = ({
                 }
               }}
             >
-              {isFollowingProfile ? "Unfollow" : "Follow"}
+              {isFollowingProfile ? `Unfollow` : `Follow`}
             </button>
           )}
         </div>
-        <div></div>
+        <div className="container flex mt-4">
+          {followers === undefined || following === undefined ? (
+            <Skeleton count={1} width={677} height={24} />
+          ) : (
+            <>
+              <p className="mr-10">
+                <span className="font-bold">{photosCount}</span>
+                {` `} {photosCount === 1 ? `photo` : `photos`}
+              </p>
+              <p className="mr-10">
+                <span className="font-bold">{followerCount}</span>
+                {` `} {followerCount === 1 ? `follower` : `followers`}
+              </p>
+              <p className="mr-10">
+                <span className="font-bold">{following.length}</span>
+              </p>
+            </>
+          )}
+        </div>
+        <div className="container mt-4">
+          <p className="font-medium">{!fullName ? <Skeleton count={1} height={24} /> : fullName}</p>
+        </div>
       </div>
     </div>
   );
