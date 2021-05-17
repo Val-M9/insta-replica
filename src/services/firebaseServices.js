@@ -42,7 +42,7 @@ export async function getSuggestedUsers(userId, following) {
 // updating logged user followin array and followers array of followed user
 export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, isProfileFollowed) {
   // 1st param: logged in user doc id
-  // 2nd param: the user whom will follow/unfollow
+  // 2nd param: the profileId of user whom will follow/unfollow
   // 3rd param: boolean value is the user followed already
   return firebase
     .firestore()
@@ -56,8 +56,8 @@ export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, 
 }
 
 export async function updateFollowedUserFollowers(
-  profileDocId,
-  loggedInUserDocId,
+  profileDocId, //again docId
+  loggedInUserId, //and userId who requests following
   isProfileFollowed
 ) {
   return firebase
@@ -66,8 +66,8 @@ export async function updateFollowedUserFollowers(
     .doc(profileDocId)
     .update({
       followers: isProfileFollowed
-        ? FieldValue.arrayRemove(loggedInUserDocId)
-        : FieldValue.arrayUnion(loggedInUserDocId),
+        ? FieldValue.arrayRemove(loggedInUserId)
+        : FieldValue.arrayUnion(loggedInUserId),
     });
 }
 
@@ -135,6 +135,7 @@ export async function toggleFollow(
   profileDocId,
   isFollowingProfile
 ) {
+  // pass DocId for what doc to update and UserId for who make changes
   await updateLoggedInUserFollowing(activeUserDocId, profileUserId, isFollowingProfile);
   await updateFollowedUserFollowers(profileDocId, followingUserId, isFollowingProfile);
 }

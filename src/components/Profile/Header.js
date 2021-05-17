@@ -22,15 +22,13 @@ const Header = ({
   const followBtnActive = user.username && user.username !== profileUsername;
 
   const handleToggleFollow = async () => {
-    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
-    console.log("isFollowing", isFollowingProfile);
+    setIsFollowingProfile(!isFollowingProfile);
 
     setFollowerCount({
       followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1,
     });
     await toggleFollow(user.docId, profileUserId, user.userId, profileDocId, isFollowingProfile);
   };
-  console.log("followerCount", followerCount);
 
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
