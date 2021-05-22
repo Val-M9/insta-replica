@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import * as ROUTES from "./constants/routes";
 import UserContext from "./context/UserContext";
-import IsUserLoggedIn from "./helpers/is-user-logged-in";
-import ProtectedRoute from "./helpers/protected-route";
 import useAuthListener from "./hooks/use-auth-listener";
 import Preloader from "./preloader/Preloader";
+
+import IsUserLoggedIn from "./helpers/is-user-logged-in";
+import ProtectedRoute from "./helpers/protected-route";
 
 const Login = lazy(() => import("./pages/Login"));
 const SignUp = lazy(() => import("./pages/SignUp"));

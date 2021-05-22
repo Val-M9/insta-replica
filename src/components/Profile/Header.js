@@ -84,6 +84,7 @@ const Header = ({
               </p>
               <p className="mr-10">
                 <span className="font-bold">{following.length}</span>
+                {` `}following
               </p>
             </>
           )}
