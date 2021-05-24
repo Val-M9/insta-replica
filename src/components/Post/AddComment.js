@@ -14,7 +14,7 @@ const AddComment = ({ docId, comments, setComments, commentInput }) => {
     event.preventDefault();
 
     // passing new comment into the array (with displayName) and spread old comments
-    setComments([{ displayName, comment }, ...comments]);
+    setComments([...comments, { displayName, comment }]);
     setComment("");
 
     return firebase
