@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import FirebaseContext from "../context/FirebaseContext";
 import UserContext from "../context/UserContext";
@@ -8,13 +8,16 @@ import * as ROUTES from "../constants/routes";
 const Header = () => {
   const { firebase } = useContext(FirebaseContext);
   const { user } = useContext(UserContext);
+  const history = useHistory();
 
   const signOut = () => {
     firebase.auth().signOut();
+    history.push(ROUTES.LOGIN);
   };
   const signOutOnEnter = (event) => {
     if (event.key === "Enter") {
       signOut();
+      history.push(ROUTES.LOGIN);
     }
   };
   return (
@@ -64,11 +67,11 @@ const Header = () => {
                   </svg>
                 </button>
                 <div className="flex items-center cursor-pointer">
-                  <Link to={`/p/${user.displayName}`}>
+                  <Link to={`/p/${user?.username}`}>
                     <img
                       className="rounded-full h-8 w-8 flex"
-                      src={`/images/avatars/${user.displayName}.jpg`}
-                      alt={`${user.displayName} profile`}
+                      src={`/images/avatars/${user.username}.jpg`}
+                      alt={`${user.username} profile`}
                     />
                   </Link>
                 </div>
@@ -76,7 +79,10 @@ const Header = () => {
             ) : (
               <>
                 <Link to={ROUTES.LOGIN}>
-                  <button type="button" className="bg-blue-medium font-bold text-sm text-white rounded w-20 h-8">
+                  <button
+                    type="button"
+                    className="bg-blue-medium font-bold text-sm text-white rounded w-20 h-8"
+                  >
                     LogIn
                   </button>
                 </Link>
